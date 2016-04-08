@@ -1,5 +1,9 @@
 package pl.bartoszzychal.starterkit.app.bank.repository;
 
-public interface CurrencyRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import pl.bartoszzychal.starterkit.app.bank.model.entity.CurrencyEntity;
+
+public interface CurrencyRepository extends JpaRepository<CurrencyEntity, Long> {
 
 }

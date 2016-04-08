@@ -1,5 +1,5 @@
 package pl.bartoszzychal.starterkit.app.broker.service;
 
-public interface BrokerService extends BrokerServiceAdapter {
+public interface BrokerServiceAdapter {
 
 }
