@@ -1,6 +1,6 @@
 package pl.bartoszzychal.starterkit.app.broker.mappers;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import pl.bartoszzychal.starterkit.app.broker.model.entity.TransactionEntity;
@@ -24,10 +24,10 @@ public class TransactionMapper {
 				transactionTo.getExecution());
 	}
 	
-	public static Collection<TransactionEntity> map2Entity(Collection<TransactionTo> transactionTos){
+	public static List<TransactionEntity> map2Entity(List<TransactionTo> transactionTos){
 		return transactionTos.stream().map(TransactionMapper::map).collect(Collectors.toList());
 	}
-	public static Collection<TransactionTo> map2To(Collection<TransactionEntity> transactionEntities){
+	public static List<TransactionTo> map2To(List<TransactionEntity> transactionEntities){
 		return transactionEntities.stream().map(TransactionMapper::map).collect(Collectors.toList());
 	}
 }

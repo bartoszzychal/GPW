@@ -1,6 +1,6 @@
 package pl.bartoszzychal.starterkit.app.broker.mappers;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import pl.bartoszzychal.starterkit.app.broker.model.entity.StockEntity;
@@ -17,10 +17,10 @@ public class StockMapper {
 		return new StockEntity(stockTo.getIdClient(), stockTo.getNumber(),CompanyMapper.map(stockTo.getCompany()));
 	}
 	
-	public static Collection<StockTo> map2To(Collection<StockEntity> stockEntities){
+	public static List<StockTo> map2To(List<StockEntity> stockEntities){
 		return stockEntities.stream().map(StockMapper::map).collect(Collectors.toList());
 	}
-	public static Collection<StockEntity> map2Entity(Collection<StockTo> stockTos){
+	public static List<StockEntity> map2Entity(List<StockTo> stockTos){
 		return stockTos.stream().map(StockMapper::map).collect(Collectors.toList());
 	}
 }
