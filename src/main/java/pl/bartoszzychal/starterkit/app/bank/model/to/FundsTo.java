@@ -1,12 +1,5 @@
 package pl.bartoszzychal.starterkit.app.bank.model.to;
 
-import java.math.BigDecimal;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 import pl.bartoszzychal.starterkit.app.bank.model.enums.Currency;
 import pl.bartoszzychal.starterkit.app.money.Money;
 

@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import pl.bartoszzychal.starterkit.app.bank.model.enums.Currency;
+import pl.bartoszzychal.starterkit.app.money.Money;
 
 @Entity
 @Table(name = "FUNDS")
@@ -30,9 +31,9 @@ public class FundsEntity implements Serializable {
 	public FundsEntity() {
 	}
 	
-	public FundsEntity(Currency currency, BigDecimal fund) {
+	public FundsEntity(Currency currency, Money fund) {
 		this.currency = currency;
-		this.fund = fund;
+		this.fund = fund.getValue();
 	}
 
 	public long getId() {
@@ -43,12 +44,12 @@ public class FundsEntity implements Serializable {
 		this.id = id;
 	}
 
-	public BigDecimal getFund() {
-		return fund;
+	public Money getFund() {
+		return new Money(fund);
 	}
 
-	public void setFund(BigDecimal fund) {
-		this.fund = fund;
+	public void setFund(Money fund) {
+		this.fund = fund.getValue();
 	}
 
 	public Currency getCurrency() {
