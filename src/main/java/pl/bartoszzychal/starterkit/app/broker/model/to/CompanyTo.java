@@ -1,20 +1,12 @@
 package pl.bartoszzychal.starterkit.app.broker.model.to;
 
 public class CompanyTo {
-	private long id;
 	private String name;
 	
-	public CompanyTo(long id, String name) {
-		this.id = id;
+	public CompanyTo(String name) {
 		this.name = name;
 	}
 	
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
 	public String getName() {
 		return name;
 	}

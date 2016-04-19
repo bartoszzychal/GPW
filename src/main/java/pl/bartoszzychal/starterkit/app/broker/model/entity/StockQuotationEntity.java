@@ -2,13 +2,19 @@ package pl.bartoszzychal.starterkit.app.broker.model.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-import pl.bartoszzychal.starterkit.app.bank.model.entity.FundsEntity;
 import pl.bartoszzychal.starterkit.app.money.Money;
 
 @Entity
@@ -16,10 +22,10 @@ import pl.bartoszzychal.starterkit.app.money.Money;
 public class StockQuotationEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 	
 	@Column(nullable = false, updatable= false )
-	private LocalDate date;
+	private Date date;
 	
 	@Column(nullable = false, scale = 2, updatable = false)
 	private BigDecimal quotation;
@@ -29,7 +35,7 @@ public class StockQuotationEntity implements Serializable {
 	private CompanyEntity company;
 	
 	
-	public StockQuotationEntity(LocalDate date, Money quotation, CompanyEntity company) {
+	public StockQuotationEntity(Date date, Money quotation, CompanyEntity company) {
 		this.date = date;
 		this.quotation = quotation.getValue();
 		this.company = company;
@@ -38,19 +44,19 @@ public class StockQuotationEntity implements Serializable {
 	public StockQuotationEntity() {
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public LocalDate getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDate date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 

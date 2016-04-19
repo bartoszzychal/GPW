@@ -13,35 +13,32 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "ACCOUNT")
 public class AccountEntity implements Serializable {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-	
+	private Long id;
+
 	@Column(nullable = false, updatable = false)
-	private long idClient;
-	
-	@GeneratedValue(strategy = GenerationType.AUTO , generator = "accountNumberGen")
+	private Long idClient;
+
 	@Column(nullable = false, updatable = false)
-	private long accountNumber;
-	
-	@GeneratedValue(strategy = GenerationType.AUTO , generator = "accountPasswordGen")
-	@Column(nullable = false, updatable = false)
-	private long accountPassword;
-	
-	@OneToMany(cascade = CascadeType.ALL ,  fetch = FetchType.LAZY)
-	@JoinColumn(name = "funds")
+	private Long accountNumber;
+
+	@Column(nullable = false, updatable = true)
+	private Long accountPassword;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "account_id")
 	private Set<FundsEntity> funds = new HashSet<>();
-	
-	public AccountEntity() {
-	}
-	
-	public AccountEntity(long id, long idClient, long accountNumber, long accountPassword, Set<FundsEntity> funds) {
+
+	public AccountEntity(Long id, Long idClient, Long accountNumber, Long accountPassword, Set<FundsEntity> funds) {
 		this.id = id;
 		this.idClient = idClient;
 		this.accountNumber = accountNumber;
@@ -49,26 +46,36 @@ public class AccountEntity implements Serializable {
 		this.funds = funds;
 	}
 
-
-
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public long getIdClient() {
+	public Long getIdClient() {
 		return idClient;
 	}
 
-	public long getAccountNumber() {
+	public void setIdClient(Long idClient) {
+		this.idClient = idClient;
+	}
+
+	public Long getAccountNumber() {
 		return accountNumber;
 	}
 
-	public long getAccountPassword() {
+	public void setAccountNumber(Long accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+
+	public Long getAccountPassword() {
 		return accountPassword;
+	}
+
+	public void setAccountPassword(Long accountPassword) {
+		this.accountPassword = accountPassword;
 	}
 
 	public Set<FundsEntity> getFunds() {
@@ -78,4 +85,5 @@ public class AccountEntity implements Serializable {
 	public void setFunds(Set<FundsEntity> funds) {
 		this.funds = funds;
 	}
+
 }

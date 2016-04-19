@@ -9,10 +9,10 @@ import javax.persistence.*;
 public class StockEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 	
 	@Column(nullable = false)
-	private long idClient;
+	private Long idClient;
 	
 	@Column(nullable = false)
 	private Integer number;
@@ -21,7 +21,7 @@ public class StockEntity implements Serializable {
 	@JoinColumn(name = "company")
 	private CompanyEntity company;
 	
-	public StockEntity(long idClient, Integer number, CompanyEntity company) {
+	public StockEntity(Long idClient, Integer number, CompanyEntity company) {
 		this.idClient = idClient;
 		this.number = number;
 		this.company = company;
@@ -30,19 +30,19 @@ public class StockEntity implements Serializable {
 	public StockEntity() {
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public long getIdClient() {
+	public Long getIdClient() {
 		return idClient;
 	}
 
-	public void setIdClient(long idClient) {
+	public void setIdClient(Long idClient) {
 		this.idClient = idClient;
 	}
 

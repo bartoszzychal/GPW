@@ -1,8 +1,7 @@
 package pl.bartoszzychal.starterkit.app.broker.model.entity;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,17 +21,17 @@ import pl.bartoszzychal.starterkit.app.broker.model.enums.TransactionType;
 public class TransactionEntity implements Serializable {
 	@Id
 	@GeneratedValue
-	private long id;
+	private Long id;
 
 	@Column(nullable = false, updatable = false)
-	private long idClient;
+	private Long idClient;
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "stockEntity")
 	private StockEntity stockEntity;
 
 	@Column(nullable = false, updatable = false)
-	private LocalDate date;
+	private Date date;
 
 	@Column(nullable = false)
 	private TransactionType type;
@@ -40,7 +39,7 @@ public class TransactionEntity implements Serializable {
 	@Column(nullable = false)
 	private TransactionExecution execution;
 
-	public TransactionEntity(long idClient, StockEntity stockEntity, LocalDate date, TransactionType type,
+	public TransactionEntity(Long idClient, StockEntity stockEntity, Date date, TransactionType type,
 			TransactionExecution execution) {
 		this.idClient = idClient;
 		this.stockEntity = stockEntity;
@@ -52,19 +51,19 @@ public class TransactionEntity implements Serializable {
 	public TransactionEntity() {
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public long getIdClient() {
+	public Long getIdClient() {
 		return idClient;
 	}
 
-	public void setIdClient(long idClient) {
+	public void setIdClient(Long idClient) {
 		this.idClient = idClient;
 	}
 
@@ -76,11 +75,11 @@ public class TransactionEntity implements Serializable {
 		this.stockEntity = stockEntity;
 	}
 
-	public LocalDate getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDate date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 

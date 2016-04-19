@@ -3,6 +3,7 @@ package pl.bartoszzychal.starterkit.app.bank.model.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,21 +21,21 @@ public class CurrencyEntity implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	long id;
+	private Long id;
 
 	@Column(nullable = false, updatable = false)
-	Currency currency;
+	private Currency currency;
 
 	@Column(nullable = false, updatable = false, scale=2)
-	BigDecimal rate;
+	private BigDecimal rate;
 
 	@Column(nullable = false, updatable = false)
-	LocalDate date;
+	private Date date;
 
 	public CurrencyEntity() {
 	}
 	
-	public CurrencyEntity(long id, Currency currency, BigDecimal rate, LocalDate date) {
+	public CurrencyEntity(Long id, Currency currency, BigDecimal rate, Date date) {
 		this.id = id;
 		this.currency = currency;
 		this.rate = rate;
@@ -49,15 +50,15 @@ public class CurrencyEntity implements Serializable {
 		return new Money(rate);
 	}
 
-	public LocalDate getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 }

@@ -5,14 +5,14 @@ import java.util.Set;
 
 public class AccountTo {
 	
-	private long id;
-	private long idClient;
-	private long accountNumber;
-	private long accountPassword;
+	private Long id;
+	private Long idClient;
+	private Long accountNumber;
+	private Long accountPassword;
 	private Set<FundsTo> funds = new HashSet<>();
 	
 	
-	public AccountTo(long id, long idClient, long accountNumber, long accountPassword, Set<FundsTo> funds) {
+	public AccountTo(Long id, Long idClient, Long accountNumber, Long accountPassword, Set<FundsTo> funds) {
 		this.id = id;
 		this.idClient = idClient;
 		this.accountNumber = accountNumber;
@@ -20,28 +20,28 @@ public class AccountTo {
 		this.funds = funds;
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public long getIdClient() {
+	public Long getIdClient() {
 		return idClient;
 	}
-	public void setIdClient(long idClient) {
+	public void setIdClient(Long idClient) {
 		this.idClient = idClient;
 	}
-	public long getAccountNumber() {
+	public Long getAccountNumber() {
 		return accountNumber;
 	}
-	public void setAccountNumber(long accountNumber) {
+	public void setAccountNumber(Long accountNumber) {
 		this.accountNumber = accountNumber;
 	}
-	public long getAccountPassword() {
+	public Long getAccountPassword() {
 		return accountPassword;
 	}
-	public void setAccountPassword(long accountPassword) {
+	public void setAccountPassword(Long accountPassword) {
 		this.accountPassword = accountPassword;
 	}
 	public Set<FundsTo> getFunds() {

@@ -1,32 +1,33 @@
 package pl.bartoszzychal.starterkit.app.broker.model.to;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 import pl.bartoszzychal.starterkit.app.money.Money;
 
 public class StockQuotationTo {
-	private long id;
-	private LocalDate date;
+	private Long id;
+	private Date date;
 	private Money quotation;
 	private CompanyTo company;
 
-	public StockQuotationTo(long id, LocalDate date, Money quotation, CompanyTo company) {
+	public StockQuotationTo(Long id, Date date, Money quotation, CompanyTo company) {
 		this.id = id;
 		this.date = date;
 		this.quotation = quotation;
 		this.company = company;
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public LocalDate getDate() {
+	public Date getDate() {
 		return date;
 	}
-	public void setDate(LocalDate date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 	public Money getQuotation() {

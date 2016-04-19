@@ -12,43 +12,43 @@ import javax.persistence.Table;
 public class ClientEntity {
 	@Id
 	@GeneratedValue
-	private long id;
+	private Long id;
 
 	@Column(updatable = true)
-	private long accountNumber;
+	private Long accountNumber;
 
 	@Column(updatable = true)
-	private long accountPassword;
+	private Long accountPassword;
 
 	public ClientEntity() {
 	}
 	
-	public ClientEntity(long id, long accountNumber, long accountPassword) {
+	public ClientEntity(Long id, Long accountNumber, Long accountPassword) {
 		this.id = id;
 		this.accountNumber = accountNumber;
 		this.accountPassword = accountPassword;
 	}
-	public long getAccountNumber() {
+	public Long getAccountNumber() {
 		return accountNumber;
 	}
 
-	public void setAccountNumber(long accountNumber) {
+	public void setAccountNumber(Long accountNumber) {
 		this.accountNumber = accountNumber;
 	}
 
-	public long getAccountPassword() {
+	public Long getAccountPassword() {
 		return accountPassword;
 	}
 
-	public void setAccountPassword(long accountPassword) {
+	public void setAccountPassword(Long accountPassword) {
 		this.accountPassword = accountPassword;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 }

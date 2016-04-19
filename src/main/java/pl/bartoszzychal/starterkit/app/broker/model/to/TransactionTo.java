@@ -1,20 +1,20 @@
 package pl.bartoszzychal.starterkit.app.broker.model.to;
 
 import java.time.LocalDate;
+import java.util.Date;
 
-import pl.bartoszzychal.starterkit.app.broker.model.entity.StockEntity;
 import pl.bartoszzychal.starterkit.app.broker.model.enums.TransactionExecution;
 import pl.bartoszzychal.starterkit.app.broker.model.enums.TransactionType;
 
 public class TransactionTo {
-	private long id;
-	private long idClient;
+	private Long id;
+	private Long idClient;
 	private StockTo stockTo;
-	private LocalDate date;
+	private Date date;
 	private TransactionType type;
 	private TransactionExecution execution;
 	
-	public TransactionTo(long id, long idClient, StockTo stockTo, LocalDate date, TransactionType type,
+	public TransactionTo(Long id, Long idClient, StockTo stockTo, Date date, TransactionType type,
 			TransactionExecution execution) {
 		this.id = id;
 		this.idClient = idClient;
@@ -24,16 +24,16 @@ public class TransactionTo {
 		this.execution = execution;
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public long getIdClient() {
+	public Long getIdClient() {
 		return idClient;
 	}
-	public void setIdClient(long idClient) {
+	public void setIdClient(Long idClient) {
 		this.idClient = idClient;
 	}
 	public StockTo getStockEntity() {
@@ -42,10 +42,10 @@ public class TransactionTo {
 	public void setStockEntity(StockTo stockTo) {
 		this.stockTo = stockTo;
 	}
-	public LocalDate getDate() {
+	public Date getDate() {
 		return date;
 	}
-	public void setDate(LocalDate date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 	public TransactionType getType() {

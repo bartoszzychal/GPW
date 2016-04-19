@@ -6,12 +6,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "COMPANY")
-public class CompanyEntity implements Serializable{
-	@Id
-	@GeneratedValue
-	private long id;
+public class CompanyEntity implements Serializable{	
 	
-	@Column(nullable = false, updatable = false, length = 100)
+	@Id
+	@Column(nullable = false, updatable = false, length = 100, unique= true)
 	private String name;
 	
 	public CompanyEntity(String name) {
@@ -21,13 +19,6 @@ public class CompanyEntity implements Serializable{
 	public CompanyEntity() {
 	}
 
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;

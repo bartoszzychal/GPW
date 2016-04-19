@@ -1,5 +1,7 @@
 package pl.bartoszzychal.starterkit.app.client.service;
 
-public interface ClientService {
+import pl.bartoszzychal.starterkit.app.client.model.to.ClientTo;
 
+public interface ClientService {
+	ClientTo addNewClient(ClientTo clientTo);
 }

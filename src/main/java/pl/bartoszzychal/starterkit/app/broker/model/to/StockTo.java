@@ -2,28 +2,28 @@ package pl.bartoszzychal.starterkit.app.broker.model.to;
 
 public class StockTo {
 	
-	private long id;
-	private long idClient;
+	private Long id;
+	private Long idClient;
 	private Integer number;
 	private CompanyTo company;
 	
-	public StockTo(long id, long idClient, Integer number, CompanyTo company) {
+	public StockTo(Long id, Long idClient, Integer number, CompanyTo company) {
 		this.id = id;
 		this.idClient = idClient;
 		this.number = number;
 		this.company = company;
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public long getIdClient() {
+	public Long getIdClient() {
 		return idClient;
 	}
-	public void setIdClient(long idClient) {
+	public void setIdClient(Long idClient) {
 		this.idClient = idClient;
 	}
 	public Integer getNumber() {

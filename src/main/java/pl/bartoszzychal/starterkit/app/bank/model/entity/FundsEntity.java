@@ -19,7 +19,7 @@ public class FundsEntity implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 	
 	@Column(nullable = false, updatable = false)
 	private Currency currency;
@@ -31,17 +31,17 @@ public class FundsEntity implements Serializable {
 	public FundsEntity() {
 	}
 	
-	public FundsEntity(long id, Currency currency, Money fund) {
+	public FundsEntity(Long id, Currency currency, Money fund) {
 		this.id = id;
 		this.currency = currency;
 		this.fund = fund.getValue();
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

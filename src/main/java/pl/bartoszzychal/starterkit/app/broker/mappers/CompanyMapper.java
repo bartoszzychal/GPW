@@ -8,7 +8,7 @@ import pl.bartoszzychal.starterkit.app.broker.model.to.CompanyTo;
 
 public class CompanyMapper {
 	public static CompanyTo map(CompanyEntity companyEntity) {
-		return new CompanyTo(companyEntity.getId(), companyEntity.getName());
+		return new CompanyTo(companyEntity.getName());
 	}
 
 	public static CompanyEntity map(CompanyTo companyTo) {
