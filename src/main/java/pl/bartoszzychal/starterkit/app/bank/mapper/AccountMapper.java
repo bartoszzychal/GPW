@@ -1,15 +1,21 @@
 package pl.bartoszzychal.starterkit.app.bank.mapper;
 
 import java.util.Collection;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import pl.bartoszzychal.starterkit.app.bank.model.entity.AccountEntity;
+import pl.bartoszzychal.starterkit.app.bank.model.entity.FundsEntity;
 import pl.bartoszzychal.starterkit.app.bank.model.to.AccountTo;
 
 public class AccountMapper {
 	public static AccountEntity map(AccountTo accountTo){
-		AccountEntity accountEntity = new AccountEntity(accountTo.getId());
-		accountEntity.setFunds(FundsMapper.map2Entity(accountTo.getFunds()).stream().collect(Collectors.toSet()));
+		Set<FundsEntity> funds = FundsMapper.map2Entity(accountTo.getFunds()).stream().collect(Collectors.toSet());
+		AccountEntity accountEntity = new AccountEntity(accountTo.getId(),
+				accountTo.getIdClient(),
+				accountTo.getAccountNumber(),
+				accountTo.getAccountPassword(),
+				funds);
 		return accountEntity;
 	}
 	

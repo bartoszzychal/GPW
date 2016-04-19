@@ -8,7 +8,7 @@ import pl.bartoszzychal.starterkit.app.bank.model.to.FundsTo;
 
 public class FundsMapper {
 	public static FundsEntity map(FundsTo fundsTo) {
-		return new FundsEntity(fundsTo.getCurrency(), fundsTo.getFund());
+		return new FundsEntity(fundsTo.getId(), fundsTo.getCurrency(), fundsTo.getFund());
 	}
 
 	public static FundsTo map(FundsEntity fundsEntity) {
