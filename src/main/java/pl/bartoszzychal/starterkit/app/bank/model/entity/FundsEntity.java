@@ -31,7 +31,8 @@ public class FundsEntity implements Serializable {
 	public FundsEntity() {
 	}
 	
-	public FundsEntity(Currency currency, Money fund) {
+	public FundsEntity(long id, Currency currency, Money fund) {
+		this.id = id;
 		this.currency = currency;
 		this.fund = fund.getValue();
 	}

@@ -34,9 +34,10 @@ public class CurrencyEntity implements Serializable {
 	public CurrencyEntity() {
 	}
 	
-	public CurrencyEntity(Currency currency, Money rate, LocalDate date) {
+	public CurrencyEntity(long id, Currency currency, BigDecimal rate, LocalDate date) {
+		this.id = id;
 		this.currency = currency;
-		this.rate = rate.getValue();
+		this.rate = rate;
 		this.date = date;
 	}
 

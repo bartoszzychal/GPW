@@ -41,9 +41,15 @@ public class AccountEntity implements Serializable {
 	public AccountEntity() {
 	}
 	
-	public AccountEntity(long idClient) {
+	public AccountEntity(long id, long idClient, long accountNumber, long accountPassword, Set<FundsEntity> funds) {
+		this.id = id;
 		this.idClient = idClient;
+		this.accountNumber = accountNumber;
+		this.accountPassword = accountPassword;
+		this.funds = funds;
 	}
+
+
 
 	public long getId() {
 		return id;

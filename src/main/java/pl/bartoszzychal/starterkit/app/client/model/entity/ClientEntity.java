@@ -22,7 +22,12 @@ public class ClientEntity {
 
 	public ClientEntity() {
 	}
-
+	
+	public ClientEntity(long id, long accountNumber, long accountPassword) {
+		this.id = id;
+		this.accountNumber = accountNumber;
+		this.accountPassword = accountPassword;
+	}
 	public long getAccountNumber() {
 		return accountNumber;
 	}
