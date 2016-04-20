@@ -59,7 +59,6 @@ public class BankServiceImpl implements BankService {
 			Money currentExchangeRate = getCurrentExchangeRate(from, to);
 			Money ToTake = new Money(money.getValue());
 			Money toAdd = money.divide(currentExchangeRate);
-
 			funds.stream().filter((fund) -> fund.getCurrency() == from).findFirst().get().substractFund(ToTake);
 			funds.stream().filter((fund) -> fund.getCurrency() == to).findFirst().get().addFund(toAdd);
 		}

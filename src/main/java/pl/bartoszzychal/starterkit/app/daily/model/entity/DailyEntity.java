@@ -14,32 +14,27 @@ public class DailyEntity {
 	private Long id;
 	
 	@Column
-	private Date startDay;
+	private Date date;
 	
-	@Column
-	private Date endDay;
-
-	@Column 
-	private Date currentDay;
-	
-
 	private DailyEntity() {	
 	}
 
-	public Date getStartDay() {
-		return startDay;
+	public Long getId() {
+		return id;
 	}
 
-	public Date getEndDay() {
-		return endDay;
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public Date getCurrentDay() {
-		return currentDay;
+
+	public Date getDate() {
+		return date;
+	}
+	
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
-	public void setCurrentDay(Date currentDay) {
-		this.currentDay = currentDay;
-	}
-		
 }

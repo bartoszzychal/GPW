@@ -32,7 +32,7 @@ public class Money {
 	}
 
 	public Money divide(Money money) {
-		return new Money(value.divide(money.getValue()));
+		return new Money(value.divide(money.getValue(),RoundingMode.DOWN));
 	}
 
 

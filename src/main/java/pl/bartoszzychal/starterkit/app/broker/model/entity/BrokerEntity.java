@@ -23,6 +23,13 @@ public class BrokerEntity {
 		this.accountNumber = accountNumber;
 		this.accountPassword = accountPassword;
 	}
+	
+	
+
+	public BrokerEntity() {
+	}
+
+
 
 	public Long getId() {
 		return id;

@@ -1,25 +1,25 @@
 package pl.bartoszzychal.starterkit.app.broker.mappers;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import pl.bartoszzychal.starterkit.app.broker.mappers.IF.CompanyMapperIF;
 import pl.bartoszzychal.starterkit.app.broker.model.entity.CompanyEntity;
 import pl.bartoszzychal.starterkit.app.broker.model.to.CompanyTo;
+import pl.bartoszzychal.starterkit.app.broker.repository.CompanyRepository;
 
-public class CompanyMapper {
-	public static CompanyTo map(CompanyEntity companyEntity) {
+@Component
+public class CompanyMapper implements CompanyMapperIF {
+	
+	@Autowired
+	private CompanyRepository companyRepository;
+	
+	public CompanyTo map(CompanyEntity companyEntity) {
 		return new CompanyTo(companyEntity.getName());
 	}
 
-	public static CompanyEntity map(CompanyTo companyTo) {
-		return new CompanyEntity(companyTo.getName());
+	public CompanyEntity map(CompanyTo companyTo) {
+		return companyRepository.findOne(companyTo.getName());
 	}
 
-	public static Collection<CompanyEntity> map2Entity(Collection<CompanyTo> companyTos) {
-		return companyTos.stream().map(CompanyMapper::map).collect(Collectors.toList());
-	}
-
-	public static Collection<CompanyTo> map2To(Collection<CompanyEntity> companyEntity) {
-		return companyEntity.stream().map(CompanyMapper::map).collect(Collectors.toList());
-	}
 }

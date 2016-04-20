@@ -1,6 +1,7 @@
 package pl.bartoszzychal.starterkit.app.broker.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,9 @@ import pl.bartoszzychal.starterkit.app.bank.service.BankService;
 import pl.bartoszzychal.starterkit.app.broker.mappers.StockMapper;
 import pl.bartoszzychal.starterkit.app.broker.mappers.StockQuotationMapper;
 import pl.bartoszzychal.starterkit.app.broker.mappers.TransactionMapper;
+import pl.bartoszzychal.starterkit.app.broker.mappers.IF.StockMapperIF;
+import pl.bartoszzychal.starterkit.app.broker.mappers.IF.StockQuotationMapperIF;
+import pl.bartoszzychal.starterkit.app.broker.mappers.IF.TransactionMapperIF;
 import pl.bartoszzychal.starterkit.app.broker.model.entity.StockEntity;
 import pl.bartoszzychal.starterkit.app.broker.model.entity.TransactionEntity;
 import pl.bartoszzychal.starterkit.app.broker.model.enums.TransactionExecution;
@@ -48,11 +52,16 @@ public class BrokerServiceImpl implements BrokerService {
 	private CurrentDay currentDay;
 	@Autowired
 	private BankService bankService;
-
+	@Autowired
+	private TransactionMapperIF transactionMapper;
+	@Autowired 
+	private StockQuotationMapperIF stockQuotationMapper;
+	@Autowired 
+	private StockMapperIF stockMapper;
 	
 	@Transactional(readOnly = false)
 	private List<TransactionTo> addTransactions(List<TransactionTo> transactionTos){
-		return TransactionMapper.map2To(transactionRepository.save(TransactionMapper.map2Entity(transactionTos)));
+		return transactionMapper.map2To(transactionRepository.save(transactionMapper.map2Entity(transactionTos)));
 	}
 
 	@Transactional(readOnly = false)
@@ -69,7 +78,7 @@ public class BrokerServiceImpl implements BrokerService {
 	@Transactional
 	public List<StockQuotationTo> getTodayStockQuotation() {
 		Date date = currentDay.getCurrentDay();
-		return StockQuotationMapper.map2To(stockQuotationRepository.getTodayStockQuotation(date));
+		return stockQuotationMapper.map2To(stockQuotationRepository.getTodayStockQuotation(date));
 	}
 
 	@Override
@@ -79,13 +88,13 @@ public class BrokerServiceImpl implements BrokerService {
 		if(upperdate.after(date)){
 			upperdate = date;
 		}
-		return StockQuotationMapper.map2To(stockQuotationRepository.getStockQuotationFrom(lowerdate, upperdate));
+		return stockQuotationMapper.map2To(stockQuotationRepository.getStockQuotationFrom(lowerdate, upperdate));
 	}
 
 	@Override
 	@Transactional
 	public List<StockTo> getAllClientStocks(Long clientAcountNumber) {
-		return StockMapper.map2To(stockRepository.getClientStocks(clientAcountNumber));
+		return stockMapper.map2To(stockRepository.getClientStocks(clientAcountNumber));
 	}
 
 	@Override
@@ -107,7 +116,7 @@ public class BrokerServiceImpl implements BrokerService {
 		int randomPriceSell = (100-rangePrice)  + r.nextInt(100-(100-rangePrice)+1);
 		int randomPriceBuy = 100  + r.nextInt((100+rangePrice)-100+1);
 		int randomStockNumber = (100-rangeStockNumber) + r.nextInt(100-(100-rangeStockNumber)+1);
-		List<TransactionEntity> transactionEntities = TransactionMapper.map2Entity(transaction);
+		List<TransactionEntity> transactionEntities = transactionMapper.map2Entity(transaction);
 		Map<TransactionType, List<TransactionEntity>> groupingByTransType = transactionEntities.stream().collect(Collectors.groupingBy(TransactionEntity::getType));
 		List<StockEntity> buyStock = getStockEntityFromTransactionList(groupingByTransType, TransactionType.BUY);
 		for (StockEntity stockEntity : buyStock) {
@@ -119,7 +128,7 @@ public class BrokerServiceImpl implements BrokerService {
 			stockEntity.setNumber((stockEntity.getNumber()*randomStockNumber)/100);
 			stockEntity.setPrice((stockEntity.getPrice().multiply(randomPriceSell)).divide(100));
 		}
-		return TransactionMapper.map2To(transactionRepository.save(transactionEntities));
+		return transactionMapper.map2To(transactionRepository.save(transactionEntities));
 	}
 	
 	@Override
@@ -138,7 +147,7 @@ public class BrokerServiceImpl implements BrokerService {
 			List<StockEntity> buyStock = getStockEntityFromTransactionList(groupingByTransType, TransactionType.BUY);
 			List<StockEntity> sellStock = getStockEntityFromTransactionList(groupingByTransType, TransactionType.SELL);
 			Money moneyBuy = sum(buyStock);
-			Money fees = calculateFees(TransactionMapper.map2To(todayTransactions));
+			Money fees = calculateFees(transactionMapper.map2To(todayTransactions));
 			Money sellingCounter = new Money(new BigDecimal(0));
 			if(confirmation.getMoney().equals(moneyBuy.add(fees))){
 				addStocksClient(buyStock);
@@ -178,7 +187,12 @@ public class BrokerServiceImpl implements BrokerService {
 	}
 	
 	private List<StockEntity> getStockEntityFromTransactionList(Map<TransactionType, List<TransactionEntity>> groupingByTransType,TransactionType type){
-		return groupingByTransType.get(type).stream().map((t)->t.getStockEntity()).collect(Collectors.toList());
+		ArrayList<StockEntity> list = new ArrayList<>();
+		List<TransactionEntity> transList = groupingByTransType.get(type);
+		if(transList != null && !transList.isEmpty()){
+			list.addAll(transList.stream().map((t)->t.getStockEntity()).collect(Collectors.toList()));
+		}
+		return list;
 	}
 	
 	private List<StockEntity> getClientStocks(Long id){

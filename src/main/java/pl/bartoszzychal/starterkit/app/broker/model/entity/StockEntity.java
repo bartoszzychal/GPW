@@ -34,6 +34,13 @@ public class StockEntity implements Serializable {
 		this.company = company;
 		this.price = price.getValue();
 	}
+	
+	
+
+	public StockEntity() {
+	}
+
+
 
 	public Long getId() {
 		return id;

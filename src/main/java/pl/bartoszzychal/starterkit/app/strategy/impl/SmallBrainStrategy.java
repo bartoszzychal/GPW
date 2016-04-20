@@ -72,7 +72,7 @@ public class SmallBrainStrategy extends AbstractStrategy {
 		for (StockTo stockTo : allClientStocks) {
 			for(StockQuotationTo stockQuotationTo: todayStockQuotation){
 				if(stockTo.getCompany().equals(stockQuotationTo.getCompany())){
-					Money quotation = stockQuotationTo.getQuotation().multiply(105).divide(100);
+					Money quotation = stockQuotationTo.getQuotation().multiply(101).divide(100);
 					Money price = stockTo.getPrice();
 					Money max = Money.max(quotation, price);
 					if(max.equals(quotation)){

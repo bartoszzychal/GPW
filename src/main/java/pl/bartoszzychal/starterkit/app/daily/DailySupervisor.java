@@ -4,7 +4,5 @@ import java.util.Date;
 
 public interface DailySupervisor{
 	Date nextDay();
-	Date getStartDay();
-	Date getEndDay();
 	Date getCurrentDay();
 }
