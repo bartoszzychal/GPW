@@ -1,7 +1,7 @@
 package pl.bartoszzychal.starterkit.app.daily;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public interface CurrentDay {
-	LocalDate getCurrentDay();
+	Date getCurrentDay();
 }

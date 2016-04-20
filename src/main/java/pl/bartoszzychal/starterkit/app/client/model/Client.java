@@ -35,5 +35,12 @@ public class Client {
 	public void setAccountPassword(Long accountPassword) {
 		this.accountPassword = accountPassword;
 	}
+
+	@Override
+	public String toString() {
+		return "Client [id=" + id + ", accountNumber=" + accountNumber + ", accountPassword=" + accountPassword
+				+ ", strategy=" + strategy + "]";
+	}
+	
 	
 }

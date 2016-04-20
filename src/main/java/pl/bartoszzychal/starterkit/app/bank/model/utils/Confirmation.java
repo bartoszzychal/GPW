@@ -1,18 +1,18 @@
-package pl.bartoszzychal.starterkit.app.bank.model.confirmation;
+package pl.bartoszzychal.starterkit.app.bank.model.utils;
 
-import java.time.LocalDate;
+import java.util.Date;
 
-import pl.bartoszzychal.starterkit.app.bank.model.confirmation.enums.Execution;
+import pl.bartoszzychal.starterkit.app.bank.model.utils.enums.Execution;
 import pl.bartoszzychal.starterkit.app.money.Money;
 
 public class Confirmation {
-	private long transferFrom;
-	private long transferTo;
+	private Long transferFrom;
+	private Long transferTo;
 	private Money money;
-	private LocalDate date;
+	private Date date;
 	private Execution execution;
 	
-	public Confirmation(long transferFrom, long transferTo, Money money, LocalDate date, Execution execution) {
+	public Confirmation(Long transferFrom, Long transferTo, Money money, Date date, Execution execution) {
 		this.transferFrom = transferFrom;
 		this.transferTo = transferTo;
 		this.money = money;
@@ -38,10 +38,10 @@ public class Confirmation {
 	public void setMoney(Money money) {
 		this.money = money;
 	}
-	public LocalDate getDate() {
+	public Date getDate() {
 		return date;
 	}
-	public void setDate(LocalDate date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 	public Execution getExecution() {

@@ -56,5 +56,13 @@ public class FundsEntity implements Serializable {
 	public Currency getCurrency() {
 		return currency;
 	}
+	
+	public void addFund(Money money){
+		this.fund.add(money.getValue());
+	}
+
+	public void substractFund(Money money){
+		this.fund.subtract(money.getValue());
+	}
 
 }

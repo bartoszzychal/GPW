@@ -35,6 +35,7 @@ public class Money {
 		return new Money(value.divide(money.getValue()));
 	}
 
+
 	public Money divide(Integer divisor) {
 		return divide(new Money(new BigDecimal(divisor)));
 	}
@@ -61,6 +62,13 @@ public class Money {
 	
 	public static Money min(Money money1, Money money2){
 		return money1.min(money2);
+	}
+	
+	public static Integer devide(Money money1, Money money2){
+		BigDecimal money1value = money1.getValue();
+		BigDecimal money2value = money2.getValue();
+		money1value.divide(money2value, 0, RoundingMode.DOWN);
+		return money1value.intValue();
 	}
 
 }

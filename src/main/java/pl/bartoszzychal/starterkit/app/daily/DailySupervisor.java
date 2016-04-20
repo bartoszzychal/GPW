@@ -1,8 +1,10 @@
 package pl.bartoszzychal.starterkit.app.daily;
 
-import java.time.LocalDate;
+import java.util.Date;
 
-public interface DailySupervisor extends CurrentDay{
-	LocalDate nextDay();
-	LocalDate setStartDay(LocalDate startDay);
+public interface DailySupervisor{
+	Date nextDay();
+	Date getStartDay();
+	Date getEndDay();
+	Date getCurrentDay();
 }

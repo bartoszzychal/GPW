@@ -1,6 +1,6 @@
 package pl.bartoszzychal.starterkit.app.bank.mapper;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import pl.bartoszzychal.starterkit.app.bank.model.entity.FundsEntity;
@@ -15,11 +15,11 @@ public class FundsMapper {
 		return new FundsTo(fundsEntity.getId(), fundsEntity.getCurrency(), fundsEntity.getFund());
 	}
 
-	public static Collection<FundsEntity> map2Entity(Collection<FundsTo> funds) {
+	public static List<FundsEntity> map2Entity(List<FundsTo> funds) {
 		return funds.stream().map(FundsMapper::map).collect(Collectors.toList());
 	}
 
-	public static Collection<FundsTo> map2To(Collection<FundsEntity> funds) {
+	public static List<FundsTo> map2To(List<FundsEntity> funds) {
 		return funds.stream().map(FundsMapper::map).collect(Collectors.toList());
 	}
 }

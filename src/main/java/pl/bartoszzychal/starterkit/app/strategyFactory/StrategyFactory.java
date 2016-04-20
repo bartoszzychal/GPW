@@ -7,7 +7,7 @@ import pl.bartoszzychal.starterkit.app.strategy.impl.SmallBrainStrategy;
 
 public class StrategyFactory {
 	public static Strategy getStrategy(Long idClient){
-		Long strategyID = idClient%3;
+		Long strategyID = idClient%1;
 		Strategy strategy = null;
 		if(strategyID == 1){
 			strategy = new SmallBrainStrategy();

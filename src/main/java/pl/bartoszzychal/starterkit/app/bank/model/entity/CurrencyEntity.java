@@ -35,10 +35,10 @@ public class CurrencyEntity implements Serializable {
 	public CurrencyEntity() {
 	}
 	
-	public CurrencyEntity(Long id, Currency currency, BigDecimal rate, Date date) {
+	public CurrencyEntity(Long id, Currency currency, Money rate, Date date) {
 		this.id = id;
 		this.currency = currency;
-		this.rate = rate;
+		this.rate = rate.getValue();
 		this.date = date;
 	}
 
