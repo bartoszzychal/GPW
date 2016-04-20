@@ -86,9 +86,15 @@ public class ClientServiceImpl implements ClientService {
 
 	private void exchangeMoneyOnDayEnd(Client client, Money exchangeOnDayEnd) {
 		Money zero = new Money(new BigDecimal(0));
+		Money PLNToEuro = bankService.getCurrentExchangeRate(Currency.PLN, Currency.EURO);
+		Money EuroToPLN = bankService.getCurrentExchangeRate(Currency.EURO, Currency.PLN);
 		Money max = Money.max(exchangeOnDayEnd,zero);
 		if(max.equals(zero)){
-			List<FundsTo> fundsAfterExchange = bankService.exchange(client.getAuthorization(),Currency.PLN ,Currency.EURO,  exchangeOnDayEnd);						
+			Money divide = exchangeOnDayEnd.divide(2);
+			List<FundsTo> fundsAfterExchange = bankService.exchange(client.getAuthorization(),Currency.PLN ,Currency.EURO,  divide);						
+		}else if(max.equals(exchangeOnDayEnd)){
+			Money divide = exchangeOnDayEnd.divide(2).divide(EuroToPLN);
+			List<FundsTo> fundsAfterExchange = bankService.exchange(client.getAuthorization(),Currency.EURO ,Currency.PLN, divide);						
 		}
 	}
 

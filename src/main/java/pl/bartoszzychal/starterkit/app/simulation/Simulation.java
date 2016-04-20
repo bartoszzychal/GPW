@@ -31,13 +31,13 @@ public class Simulation {
 	
 	public void run(){
 		List<Client> allClient = getAllClient();
-		while(dailySupervisor.getCurrentDay() != null){
+		//while(dailySupervisor.getCurrentDay() != null){
 			for (Client client : allClient) {
 				clientService.execute(client);
 			}
 			Date nextDay = dailySupervisor.nextDay();
 			LOG.info(nextDay.toString());
-		}
+		//}
 	}
 
 	private List<Client> getAllClient() {

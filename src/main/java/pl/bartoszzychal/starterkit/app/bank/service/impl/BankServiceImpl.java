@@ -53,14 +53,16 @@ public class BankServiceImpl implements BankService {
 	@Transactional(readOnly = false)
 	public List<FundsTo> exchange(Authorization authorization, Currency from, Currency to, Money money) {
 		AccountEntity account = accountRepository
-				.findOne(accountRepository.getAccountByNumber(authorization.getAccountNumber()).getId());
+				.getOne(accountRepository.getAccountByNumber(authorization.getAccountNumber()).getId());
 		if (account != null && account.getAccountPassword().equals(authorization.getAccountPassword())) {
 			Set<FundsEntity> funds = account.getFunds();
 			Money currentExchangeRate = getCurrentExchangeRate(from, to);
-			Money ToTake = new Money(money.getValue());
-			Money toAdd = money.divide(currentExchangeRate);
-			funds.stream().filter((fund) -> fund.getCurrency() == from).findFirst().get().substractFund(ToTake);
-			funds.stream().filter((fund) -> fund.getCurrency() == to).findFirst().get().addFund(toAdd);
+			Money toAdd = new Money(money.getValue());
+			Money toTake = money.divide(currentExchangeRate);
+			FundsEntity fundsToTake = funds.stream().filter((fund) -> fund.getCurrency() == from).findFirst().get();
+			FundsEntity fundsToAdd = funds.stream().filter((fund) -> fund.getCurrency() == to).findFirst().get();
+			fundsToTake.setFund(fundsToTake.getFund().substract(toTake));
+			fundsToAdd.setFund(fundsToAdd.getFund().add(toAdd));
 		}
 		return FundsMapper.map2To(account.getFunds().stream().collect(Collectors.toList()));
 	}
@@ -81,17 +83,19 @@ public class BankServiceImpl implements BankService {
 	@Transactional(readOnly = false)
 
 	public Confirmation transfer(Authorization authorization, Money money, Long transferTo) {
-		AccountEntity accountFrom = accountRepository.findOne(accountRepository.getAccountByNumber(authorization.getAccountNumber()).getId());
+		AccountEntity accountFrom = accountRepository.getOne(accountRepository.getAccountByNumber(authorization.getAccountNumber()).getId());
 		Date date = currentDay.getCurrentDay();
 		if(accountFrom!= null && accountFrom.getAccountPassword().equals(authorization.getAccountPassword())){
-			AccountEntity accountTo = accountRepository.findOne(accountRepository.getAccountByNumber(transferTo).getId());
+			AccountEntity accountTo = accountRepository.getOne(accountRepository.getAccountByNumber(transferTo).getId());
 			Money fundPLN = accountFrom.getFunds().stream().filter((fund)->fund.getCurrency()== Currency.PLN).findFirst().get().getFund();
 			Money max = Money.max(fundPLN, money);
-			if(accountTo == null || max.equals(money)){
+			if(accountTo == null || (max.equals(money)&& !fundPLN.equals(money))){
 				return new Confirmation(authorization.getAccountNumber(), transferTo, money, date, Execution.NO);
 			}
-			accountFrom.getFunds().stream().filter((fund) -> fund.getCurrency() ==  Currency.PLN).findFirst().get().substractFund(money);
-			accountTo.getFunds().stream().filter((fund) -> fund.getCurrency() ==  Currency.PLN).findFirst().get().addFund(money);
+			FundsEntity from = accountFrom.getFunds().stream().filter((fund) -> fund.getCurrency() ==  Currency.PLN).findFirst().get();
+			FundsEntity to = accountTo.getFunds().stream().filter((fund) -> fund.getCurrency() ==  Currency.PLN).findFirst().get();
+			from.setFund(from.getFund().substract(money));
+			to.setFund(to.getFund().add(money));
 			return new Confirmation(authorization.getAccountNumber(), transferTo, money, date, Execution.YES);
 		}
 		return new Confirmation(authorization.getAccountNumber(), transferTo, money, date, Execution.NO);
