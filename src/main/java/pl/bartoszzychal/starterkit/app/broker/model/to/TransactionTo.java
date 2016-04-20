@@ -8,16 +8,16 @@ import pl.bartoszzychal.starterkit.app.broker.model.enums.TransactionType;
 
 public class TransactionTo {
 	private Long id;
-	private Long idClient;
+	private Long clientAccountNumber;
 	private StockTo stockTo;
 	private Date date;
 	private TransactionType type;
 	private TransactionExecution execution;
 	
-	public TransactionTo(Long id, Long idClient, StockTo stockTo, Date date, TransactionType type,
+	public TransactionTo(Long id, Long clientAccountNumber, StockTo stockTo, Date date, TransactionType type,
 			TransactionExecution execution) {
 		this.id = id;
-		this.idClient = idClient;
+		this.clientAccountNumber = clientAccountNumber;
 		this.stockTo = stockTo;
 		this.date = date;
 		this.type = type;
@@ -31,17 +31,12 @@ public class TransactionTo {
 		this.id = id;
 	}
 	public Long getIdClient() {
-		return idClient;
+		return clientAccountNumber;
 	}
 	public void setIdClient(Long idClient) {
-		this.idClient = idClient;
+		this.clientAccountNumber = idClient;
 	}
-	public StockTo getStockEntity() {
-		return stockTo;
-	}
-	public void setStockEntity(StockTo stockTo) {
-		this.stockTo = stockTo;
-	}
+
 	public Date getDate() {
 		return date;
 	}
@@ -59,6 +54,14 @@ public class TransactionTo {
 	}
 	public void setExecution(TransactionExecution execution) {
 		this.execution = execution;
+	}
+
+	public StockTo getStockTo() {
+		return stockTo;
+	}
+
+	public void setStockTo(StockTo stockTo) {
+		this.stockTo = stockTo;
 	}
 	
 	

@@ -24,7 +24,7 @@ public class TransactionEntity implements Serializable {
 	private Long id;
 
 	@Column(nullable = false, updatable = false)
-	private Long idClient;
+	private Long clientAccountNumber;
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "stockEntity")
@@ -39,9 +39,9 @@ public class TransactionEntity implements Serializable {
 	@Column(nullable = false)
 	private TransactionExecution execution;
 
-	public TransactionEntity(Long idClient, StockEntity stockEntity, Date date, TransactionType type,
+	public TransactionEntity(Long clientAccountNumber, StockEntity stockEntity, Date date, TransactionType type,
 			TransactionExecution execution) {
-		this.idClient = idClient;
+		this.clientAccountNumber = clientAccountNumber;
 		this.stockEntity = stockEntity;
 		this.date = date;
 		this.type = type;
@@ -60,11 +60,11 @@ public class TransactionEntity implements Serializable {
 	}
 
 	public Long getIdClient() {
-		return idClient;
+		return clientAccountNumber;
 	}
 
 	public void setIdClient(Long idClient) {
-		this.idClient = idClient;
+		this.clientAccountNumber = idClient;
 	}
 
 	public StockEntity getStockEntity() {

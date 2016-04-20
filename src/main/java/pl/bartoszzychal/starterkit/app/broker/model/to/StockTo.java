@@ -1,19 +1,26 @@
 package pl.bartoszzychal.starterkit.app.broker.model.to;
 
+import java.math.BigDecimal;
+
+import pl.bartoszzychal.starterkit.app.money.Money;
+
 public class StockTo {
 	
 	private Long id;
-	private Long idClient;
+	private Long clientAccountNumber;
 	private Integer number;
 	private CompanyTo company;
+	private Money price;
 	
-	public StockTo(Long id, Long idClient, Integer number, CompanyTo company) {
+	
+	
+	public StockTo(Long id, Long clientAccountNumber, Integer number, CompanyTo company, Money price) {
 		this.id = id;
-		this.idClient = idClient;
+		this.clientAccountNumber = clientAccountNumber;
 		this.number = number;
 		this.company = company;
+		this.price = price;
 	}
-	
 	public Long getId() {
 		return id;
 	}
@@ -21,10 +28,10 @@ public class StockTo {
 		this.id = id;
 	}
 	public Long getIdClient() {
-		return idClient;
+		return clientAccountNumber;
 	}
 	public void setIdClient(Long idClient) {
-		this.idClient = idClient;
+		this.clientAccountNumber = idClient;
 	}
 	public Integer getNumber() {
 		return number;
@@ -38,5 +45,18 @@ public class StockTo {
 	public void setCompany(CompanyTo company) {
 		this.company = company;
 	}
-	
+
+	public Money getPrice() {
+		return price;
+	}
+	public void setPrice(Money price) {
+		this.price = price;
+	}
+	public void setClientAccountNumber(Long clientAccountNumber) {
+		this.clientAccountNumber = clientAccountNumber;
+	}
+	public Long getClientAccountNumber() {
+		return clientAccountNumber;
+	}
+		
 }

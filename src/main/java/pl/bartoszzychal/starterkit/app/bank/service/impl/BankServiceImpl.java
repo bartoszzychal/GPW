@@ -18,6 +18,7 @@ import pl.bartoszzychal.starterkit.app.bank.model.enums.Currency;
 import pl.bartoszzychal.starterkit.app.bank.model.to.FundsTo;
 import pl.bartoszzychal.starterkit.app.bank.model.utils.Authorization;
 import pl.bartoszzychal.starterkit.app.bank.model.utils.Confirmation;
+import pl.bartoszzychal.starterkit.app.bank.model.utils.enums.Execution;
 import pl.bartoszzychal.starterkit.app.bank.repository.AccountRepository;
 import pl.bartoszzychal.starterkit.app.bank.repository.CurrencyRepository;
 import pl.bartoszzychal.starterkit.app.bank.service.BankService;
@@ -30,11 +31,11 @@ public class BankServiceImpl implements BankService {
 
 	@Autowired
 	private AccountRepository accountRepository;
-	@Autowired 
+	@Autowired
 	private CurrencyRepository currencyRepository;
 	@Autowired
 	private CurrentDay currentDay;
-	
+
 	@Override
 	public Money getCurrentExchangeRate(Currency from, Currency to) {
 		Date currentDate = currentDay.getCurrentDay();
@@ -48,9 +49,11 @@ public class BankServiceImpl implements BankService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public List<FundsTo> exchange(Authorization authorization, Currency from, Currency to, Money money) {
-		AccountEntity account = accountRepository.getAccount(authorization.getAccountNumber());
-		if(account.getAccountPassword().equals(authorization.getAccountPassword())){
+		AccountEntity account = accountRepository
+				.findOne(accountRepository.getAccountByNumber(authorization.getAccountNumber()).getId());
+		if (account != null && account.getAccountPassword().equals(authorization.getAccountPassword())) {
 			Set<FundsEntity> funds = account.getFunds();
 			Money currentExchangeRate = getCurrentExchangeRate(from, to);
 			Money ToTake = new Money(money.getValue());
@@ -64,9 +67,10 @@ public class BankServiceImpl implements BankService {
 
 	@Override
 	public List<FundsTo> getFunds(Authorization authorization) {
-		AccountEntity account = accountRepository.getAccount(authorization.getAccountNumber());
+		AccountEntity account = accountRepository
+				.findOne(accountRepository.getAccountByNumber(authorization.getAccountNumber()).getId());
 		List<FundsTo> fundsTos = new ArrayList<>();
-		if(account.getAccountPassword().equals(authorization.getAccountPassword())){
+		if (account != null && account.getAccountPassword().equals(authorization.getAccountPassword())) {
 			Set<FundsEntity> funds = account.getFunds();
 			fundsTos.addAll(FundsMapper.map2To(funds.stream().collect(Collectors.toList())));
 		}
@@ -74,9 +78,23 @@ public class BankServiceImpl implements BankService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
+
 	public Confirmation transfer(Authorization authorization, Money money, Long transferTo) {
-		// TODO Auto-generated method stub
-		return null;
+		AccountEntity accountFrom = accountRepository.findOne(accountRepository.getAccountByNumber(authorization.getAccountNumber()).getId());
+		Date date = currentDay.getCurrentDay();
+		if(accountFrom!= null && accountFrom.getAccountPassword().equals(authorization.getAccountPassword())){
+			AccountEntity accountTo = accountRepository.findOne(accountRepository.getAccountByNumber(transferTo).getId());
+			Money fundPLN = accountFrom.getFunds().stream().filter((fund)->fund.getCurrency()== Currency.PLN).findFirst().get().getFund();
+			Money max = Money.max(fundPLN, money);
+			if(accountTo == null || max.equals(money)){
+				return new Confirmation(authorization.getAccountNumber(), transferTo, money, date, Execution.NO);
+			}
+			accountFrom.getFunds().stream().filter((fund) -> fund.getCurrency() ==  Currency.PLN).findFirst().get().substractFund(money);
+			accountTo.getFunds().stream().filter((fund) -> fund.getCurrency() ==  Currency.PLN).findFirst().get().addFund(money);
+			return new Confirmation(authorization.getAccountNumber(), transferTo, money, date, Execution.YES);
+		}
+		return new Confirmation(authorization.getAccountNumber(), transferTo, money, date, Execution.NO);
 	}
 
 

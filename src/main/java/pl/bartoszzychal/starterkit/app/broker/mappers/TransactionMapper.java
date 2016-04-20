@@ -18,7 +18,7 @@ public class TransactionMapper {
 	
 	public static TransactionEntity map(TransactionTo transactionTo){
 		return new TransactionEntity(transactionTo.getIdClient(),
-				StockMapper.map(transactionTo.getStockEntity()),
+				StockMapper.map(transactionTo.getStockTo()),
 				transactionTo.getDate(),
 				transactionTo.getType(),
 				transactionTo.getExecution());

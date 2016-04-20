@@ -1,8 +1,11 @@
 package pl.bartoszzychal.starterkit.app.broker.model.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.*;
+
+import pl.bartoszzychal.starterkit.app.money.Money;
 
 @Entity
 @Table(name = "STOCK")
@@ -12,7 +15,7 @@ public class StockEntity implements Serializable {
 	private Long id;
 	
 	@Column(nullable = false)
-	private Long idClient;
+	private Long clientAccountNumber;
 	
 	@Column(nullable = false)
 	private Integer number;
@@ -21,13 +24,15 @@ public class StockEntity implements Serializable {
 	@JoinColumn(name = "company")
 	private CompanyEntity company;
 	
-	public StockEntity(Long idClient, Integer number, CompanyEntity company) {
-		this.idClient = idClient;
+	@Column(nullable = false, scale = 2)
+	private BigDecimal price;
+	
+	public StockEntity(Long id, Long clientAccountNumber, Integer number, CompanyEntity company, Money price) {
+		this.id = id;
+		this.clientAccountNumber = clientAccountNumber;
 		this.number = number;
 		this.company = company;
-	}
-
-	public StockEntity() {
+		this.price = price.getValue();
 	}
 
 	public Long getId() {
@@ -38,12 +43,12 @@ public class StockEntity implements Serializable {
 		this.id = id;
 	}
 
-	public Long getIdClient() {
-		return idClient;
+	public Long getClientAccountNumber() {
+		return clientAccountNumber;
 	}
 
-	public void setIdClient(Long idClient) {
-		this.idClient = idClient;
+	public void setClientAccountNumber(Long clientAccountNumber) {
+		this.clientAccountNumber = clientAccountNumber;
 	}
 
 	public Integer getNumber() {
@@ -61,6 +66,12 @@ public class StockEntity implements Serializable {
 	public void setCompany(CompanyEntity company) {
 		this.company = company;
 	}
-	
-	
+
+	public Money getPrice() {
+		return new Money(price);
+	}
+
+	public void setPrice(Money price) {
+		this.price = price.getValue();
+	}
 }
