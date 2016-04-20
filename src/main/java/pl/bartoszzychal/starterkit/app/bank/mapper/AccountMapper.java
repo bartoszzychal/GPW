@@ -1,7 +1,7 @@
 package pl.bartoszzychal.starterkit.app.bank.mapper;
 
 import java.util.Collection;
-import java.util.Set;import java.util.stream.Collector;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import pl.bartoszzychal.starterkit.app.bank.model.entity.AccountEntity;

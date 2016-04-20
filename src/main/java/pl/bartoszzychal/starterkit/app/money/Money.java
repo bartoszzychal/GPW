@@ -70,6 +70,10 @@ public class Money {
 		money1value.divide(money2value, 0, RoundingMode.DOWN);
 		return money1value.intValue();
 	}
+	
+	public static Money abs(Money money){
+		return new Money(money.getValue().abs());
+	}
 
 	@Override
 	public int hashCode() {

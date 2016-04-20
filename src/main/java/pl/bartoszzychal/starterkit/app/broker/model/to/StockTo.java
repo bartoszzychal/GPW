@@ -1,7 +1,5 @@
 package pl.bartoszzychal.starterkit.app.broker.model.to;
 
-import java.math.BigDecimal;
-
 import pl.bartoszzychal.starterkit.app.money.Money;
 
 public class StockTo {

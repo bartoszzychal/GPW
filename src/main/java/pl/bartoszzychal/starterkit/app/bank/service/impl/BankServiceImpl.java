@@ -29,6 +29,7 @@ import pl.bartoszzychal.starterkit.app.money.Money;
 @Transactional(readOnly = true)
 public class BankServiceImpl implements BankService {
 
+	private static final int BROKERAGE_MONEY_EXCHANGE = 102;
 	@Autowired
 	private AccountRepository accountRepository;
 	@Autowired
@@ -43,8 +44,8 @@ public class BankServiceImpl implements BankService {
 		CurrencyEntity currencyTo = currencyRepository.getCurrencyFromDay(currentDate, to);
 		Money rateFrom = currencyFrom.getRate();
 		Money rateTo = currencyTo.getRate();
-		Money rateFromWithBrokerage = rateFrom.multiply(102).divide(100);
-		Money rate = rateTo.divide(rateFromWithBrokerage);
+		Money rateToWithBrokerage = rateTo.multiply(BROKERAGE_MONEY_EXCHANGE).divide(100);
+		Money rate = rateFrom.divide(rateToWithBrokerage);
 		return rate;
 	}
 

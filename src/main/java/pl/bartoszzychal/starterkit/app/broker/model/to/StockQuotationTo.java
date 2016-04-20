@@ -1,6 +1,5 @@
 package pl.bartoszzychal.starterkit.app.broker.model.to;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 import pl.bartoszzychal.starterkit.app.money.Money;

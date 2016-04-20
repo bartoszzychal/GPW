@@ -1,46 +1,41 @@
 package pl.bartoszzychal.starterkit.app.client.model;
 
+import pl.bartoszzychal.starterkit.app.bank.model.utils.Authorization;
+import pl.bartoszzychal.starterkit.app.bank.service.BankServiceAdapter;
+import pl.bartoszzychal.starterkit.app.broker.service.BrokerServiceAdapter;
 import pl.bartoszzychal.starterkit.app.client.model.to.ClientTo;
 import pl.bartoszzychal.starterkit.app.strategy.Strategy;
 import pl.bartoszzychal.starterkit.app.strategyFactory.StrategyFactory;
 
 public class Client {
 	private Long id;
-	private Long accountNumber;
-	private Long accountPassword;
+	private Authorization authorization;
 	private Strategy strategy;
-	
-	public Client(ClientTo clientTo){
+
+	public Client(ClientTo clientTo, BrokerServiceAdapter brokerService, BankServiceAdapter bankService) {
 		this.id = clientTo.getId();
-		this.accountNumber = clientTo.getAccountNumber();
-		this.accountPassword = clientTo.getAccountPassword();
-		this.strategy = StrategyFactory.getStrategy(id);
+		this.authorization = new Authorization(clientTo.getAccountNumber(), clientTo.getAccountPassword());
+		this.strategy = StrategyFactory.getStrategy(id, authorization,brokerService, bankService);
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Long getAccountNumber() {
-		return accountNumber;
-	}
-	public void setAccountNumber(Long accountNumber) {
-		this.accountNumber = accountNumber;
-	}
-	public Long getAccountPassword() {
-		return accountPassword;
-	}
-	public void setAccountPassword(Long accountPassword) {
-		this.accountPassword = accountPassword;
+
+	public Authorization getAuthorization() {
+		return authorization;
 	}
 
-	@Override
-	public String toString() {
-		return "Client [id=" + id + ", accountNumber=" + accountNumber + ", accountPassword=" + accountPassword
-				+ ", strategy=" + strategy + "]";
+	public void setAuthorization(Authorization authorization) {
+		this.authorization = authorization;
 	}
-	
-	
+
+	public Strategy getStrategy() {
+		return strategy;
+	}
+
 }
