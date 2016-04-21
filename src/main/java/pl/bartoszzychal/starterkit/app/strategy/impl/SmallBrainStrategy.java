@@ -20,7 +20,7 @@ import pl.bartoszzychal.starterkit.app.strategy.Strategy;
 
 public class SmallBrainStrategy extends AbstractStrategy {
 
-	private static final int BUY_NUMBER = 20;
+	private static final int BUY_NUMBER = 5;
 
 
 	public SmallBrainStrategy(Authorization authorization, BrokerServiceAdapter brokerService,
@@ -48,7 +48,7 @@ public class SmallBrainStrategy extends AbstractStrategy {
 			Money needed = stockQuotationTo.getQuotation().multiply(BUY_NUMBER);
 			if(Money.max(funds, used.add(needed)).equals(funds)){
 				used = used.add(needed);
-				StockTo stockTo = new StockTo(null, authorization.getAccountNumber(), 20, stockQuotationTo.getCompany(), stockQuotationTo.getQuotation());
+				StockTo stockTo = new StockTo(null, null, BUY_NUMBER, stockQuotationTo.getCompany(), stockQuotationTo.getQuotation());
 				suggestingTransactions.add(new TransactionTo(null, authorization.getAccountNumber(),stockTo , stockQuotationTo.getDate(), TransactionType.BUY, TransactionExecution.NO));
 			}
 		}
@@ -71,7 +71,7 @@ public class SmallBrainStrategy extends AbstractStrategy {
 			List<TransactionTo> suggestingTransactions) {
 		for (StockTo stockTo : allClientStocks) {
 			for(StockQuotationTo stockQuotationTo: todayStockQuotation){
-				if(stockTo.getCompany().equals(stockQuotationTo.getCompany())){
+				if(stockTo.getCompany().getName().equals(stockQuotationTo.getCompany().getName())){
 					Money quotation = stockQuotationTo.getQuotation().multiply(101).divide(100);
 					Money price = stockTo.getPrice();
 					Money max = Money.max(quotation, price);

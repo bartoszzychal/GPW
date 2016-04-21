@@ -14,7 +14,7 @@ public class StockEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private Long clientAccountNumber;
 	
 	@Column(nullable = false)
