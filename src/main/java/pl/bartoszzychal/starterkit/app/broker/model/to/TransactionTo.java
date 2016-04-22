@@ -4,38 +4,59 @@ import java.util.Date;
 
 import pl.bartoszzychal.starterkit.app.broker.model.enums.TransactionExecution;
 import pl.bartoszzychal.starterkit.app.broker.model.enums.TransactionType;
+import pl.bartoszzychal.starterkit.app.money.Money;
 
 public class TransactionTo {
 	private Long id;
 	private Long clientAccountNumber;
-	private StockTo stockTo;
+	private Integer number;
+	private CompanyTo company;
+	private Money price;
 	private Date date;
 	private TransactionType type;
 	private TransactionExecution execution;
 	
-	public TransactionTo(Long id, Long clientAccountNumber, StockTo stockTo, Date date, TransactionType type,
-			TransactionExecution execution) {
+	public TransactionTo(Long id, Long clientAccountNumber, Integer number, CompanyTo company, Money price, Date date,
+			TransactionType type, TransactionExecution execution) {
 		this.id = id;
 		this.clientAccountNumber = clientAccountNumber;
-		this.stockTo = stockTo;
+		this.number = number;
+		this.company = company;
+		this.price = price;
 		this.date = date;
 		this.type = type;
 		this.execution = execution;
 	}
-	
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Long getIdClient() {
+	public Long getClientAccountNumber() {
 		return clientAccountNumber;
 	}
-	public void setIdClient(Long idClient) {
-		this.clientAccountNumber = idClient;
+	public void setClientAccountNumber(Long clientAccountNumber) {
+		this.clientAccountNumber = clientAccountNumber;
 	}
-
+	public Integer getNumber() {
+		return number;
+	}
+	public void setNumber(Integer number) {
+		this.number = number;
+	}
+	public CompanyTo getCompany() {
+		return company;
+	}
+	public void setCompany(CompanyTo company) {
+		this.company = company;
+	}
+	public Money getPrice() {
+		return price;
+	}
+	public void setPrice(Money price) {
+		this.price = price;
+	}
 	public Date getDate() {
 		return date;
 	}
@@ -54,14 +75,8 @@ public class TransactionTo {
 	public void setExecution(TransactionExecution execution) {
 		this.execution = execution;
 	}
+	
 
-	public StockTo getStockTo() {
-		return stockTo;
-	}
-
-	public void setStockTo(StockTo stockTo) {
-		this.stockTo = stockTo;
-	}
 	
 	
 }

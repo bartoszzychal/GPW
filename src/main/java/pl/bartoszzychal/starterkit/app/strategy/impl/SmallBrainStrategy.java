@@ -7,7 +7,6 @@ import java.util.List;
 import pl.bartoszzychal.starterkit.app.bank.model.enums.Currency;
 import pl.bartoszzychal.starterkit.app.bank.model.to.FundsTo;
 import pl.bartoszzychal.starterkit.app.bank.model.utils.Authorization;
-import pl.bartoszzychal.starterkit.app.bank.model.utils.enums.Execution;
 import pl.bartoszzychal.starterkit.app.bank.service.BankServiceAdapter;
 import pl.bartoszzychal.starterkit.app.broker.model.enums.TransactionExecution;
 import pl.bartoszzychal.starterkit.app.broker.model.enums.TransactionType;
@@ -16,7 +15,6 @@ import pl.bartoszzychal.starterkit.app.broker.model.to.StockTo;
 import pl.bartoszzychal.starterkit.app.broker.model.to.TransactionTo;
 import pl.bartoszzychal.starterkit.app.broker.service.BrokerServiceAdapter;
 import pl.bartoszzychal.starterkit.app.money.Money;
-import pl.bartoszzychal.starterkit.app.strategy.Strategy;
 
 public class SmallBrainStrategy extends AbstractStrategy {
 
@@ -48,8 +46,7 @@ public class SmallBrainStrategy extends AbstractStrategy {
 			Money needed = stockQuotationTo.getQuotation().multiply(BUY_NUMBER);
 			if(Money.max(funds, used.add(needed)).equals(funds)){
 				used = used.add(needed);
-				StockTo stockTo = new StockTo(null, null, BUY_NUMBER, stockQuotationTo.getCompany(), stockQuotationTo.getQuotation());
-				suggestingTransactions.add(new TransactionTo(null, authorization.getAccountNumber(),stockTo , stockQuotationTo.getDate(), TransactionType.BUY, TransactionExecution.NO));
+				suggestingTransactions.add(prepareTransaction(stockQuotationTo, TransactionType.BUY));
 			}
 		}
 
@@ -76,11 +73,22 @@ public class SmallBrainStrategy extends AbstractStrategy {
 					Money price = stockTo.getPrice();
 					Money max = Money.max(quotation, price);
 					if(max.equals(quotation)){
-						suggestingTransactions.add(new TransactionTo(null, authorization.getAccountNumber(),stockTo,stockQuotationTo.getDate(), TransactionType.SELL, TransactionExecution.NO));
+						suggestingTransactions.add(prepareTransaction(stockQuotationTo, TransactionType.SELL));
 					}
 				}
 			}
 		}
+	}
+
+	private TransactionTo prepareTransaction(StockQuotationTo stockQuotationTo, TransactionType type) {
+		return new TransactionTo(null, 
+				authorization.getAccountNumber(),
+				BUY_NUMBER,
+				stockQuotationTo.getCompany(),
+				stockQuotationTo.getQuotation(),
+				stockQuotationTo.getDate(), 
+				type,
+				TransactionExecution.NO);
 	}
 	
 

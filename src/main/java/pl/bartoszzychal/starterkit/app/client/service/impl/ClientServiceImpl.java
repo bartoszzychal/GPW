@@ -55,7 +55,7 @@ public class ClientServiceImpl implements ClientService {
 	private void checkBrokerOffer(Client client, Strategy clientStrategy, List<TransactionTo> suggestTransactions) {
 		List<TransactionTo> prepareOfferByBroker = brokerService.prepareOffer(suggestTransactions);
 		if(clientStrategy.analyzeBrokerOffer(prepareOfferByBroker)){
-			makeTransactions(client, suggestTransactions);
+			makeTransactions(client, prepareOfferByBroker);
 		}
 	}
 
@@ -104,9 +104,8 @@ public class ClientServiceImpl implements ClientService {
 	}
 	
 	private Money calculateStockCost(List<TransactionTo> transactionTos){
-		 List<StockTo> stock = transactionTos.stream().map(t->t.getStockTo()).collect(Collectors.toList());
-		 if(!stock.isEmpty()){
-			 return stock.stream().map(st->st.getPrice().multiply(st.getNumber())).reduce((m1,m2)->m1.add(m2)).get();			 
+		 if(!transactionTos.isEmpty()){
+			 return transactionTos.stream().map(st->st.getPrice().multiply(st.getNumber())).reduce((m1,m2)->m1.add(m2)).get();			 
 		 }
 		 return new Money(new BigDecimal(0));
 	}

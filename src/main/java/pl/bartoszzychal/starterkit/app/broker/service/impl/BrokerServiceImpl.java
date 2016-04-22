@@ -104,7 +104,12 @@ public class BrokerServiceImpl implements BrokerService {
 	}
 
 	@Transactional(readOnly = false)
-	private List<StockEntity> addStocksClient(List<StockEntity> stockEntities) {
+	private List<StockEntity> addStocksClient(List<TransactionEntity> transactionEntities) {
+		List<StockEntity> stockEntities = new ArrayList<>();
+		for (TransactionEntity transactionEntity : transactionEntities) {
+			StockEntity stockEntity = new StockEntity(null, transactionEntity.getClientAccountNumber(),transactionEntity.getNumber(),transactionEntity.getCompany(),transactionEntity.getPrice());
+			stockEntities.add(stockEntity);
+		}
 		return stockRepository.save(stockEntities);
 	}
 	@Override
@@ -118,15 +123,19 @@ public class BrokerServiceImpl implements BrokerService {
 		int randomStockNumber = (100-rangeStockNumber) + r.nextInt(100-(100-rangeStockNumber)+1);
 		List<TransactionEntity> transactionEntities = transactionMapper.map2Entity(transaction);
 		Map<TransactionType, List<TransactionEntity>> groupingByTransType = transactionEntities.stream().collect(Collectors.groupingBy(TransactionEntity::getType));
-		List<StockEntity> buyStock = getStockEntityFromTransactionList(groupingByTransType, TransactionType.BUY);
-		for (StockEntity stockEntity : buyStock) {
-			stockEntity.setNumber((stockEntity.getNumber()*randomStockNumber)/100);
-			stockEntity.setPrice((stockEntity.getPrice().multiply(randomPriceBuy)).divide(100));
+		List<TransactionEntity> buyTransaction = getByTypeFromTransactionList(groupingByTransType, TransactionType.BUY);
+		if(buyTransaction!= null){
+			for (TransactionEntity trans : buyTransaction) {
+				trans.setNumber((trans.getNumber()*randomStockNumber)/100);
+				trans.setPrice((trans.getPrice().multiply(randomPriceBuy)).divide(100));
+			}			
 		}
-		List<StockEntity> sellStock = getStockEntityFromTransactionList(groupingByTransType, TransactionType.SELL);
-		for (StockEntity stockEntity : sellStock) {
-			stockEntity.setNumber((stockEntity.getNumber()*randomStockNumber)/100);
-			stockEntity.setPrice((stockEntity.getPrice().multiply(randomPriceSell)).divide(100));
+		List<TransactionEntity> sellStock = getByTypeFromTransactionList(groupingByTransType, TransactionType.SELL);
+		if(sellStock!=null){
+			for (TransactionEntity trans : sellStock) {
+				trans.setNumber((trans.getNumber()*randomStockNumber)/100);
+				trans.setPrice((trans.getPrice().multiply(randomPriceSell)).divide(100));
+			}			
 		}
 		return transactionMapper.map2To(transactionRepository.save(transactionEntities));
 	}
@@ -144,24 +153,32 @@ public class BrokerServiceImpl implements BrokerService {
 			List<TransactionEntity> todayTransactions = transactionRepository.getTodayTransactions(date, clientAccountNumber);
 			List<StockEntity> clientStocks = getClientStocks(clientAccountNumber);
 			Map<TransactionType, List<TransactionEntity>> groupingByTransType = todayTransactions.stream().collect(Collectors.groupingBy(TransactionEntity::getType));
-			List<StockEntity> buyStock = getStockEntityFromTransactionList(groupingByTransType, TransactionType.BUY);
-			List<StockEntity> sellStock = getStockEntityFromTransactionList(groupingByTransType, TransactionType.SELL);
-			Money moneyBuy = sum(buyStock);
+			List<TransactionEntity> transactionBuy = getByTypeFromTransactionList(groupingByTransType, TransactionType.BUY);
+			List<TransactionEntity> transactionSell = getByTypeFromTransactionList(groupingByTransType, TransactionType.SELL);
+			Money moneyBuy = sum(transactionBuy);
 			Money fees = calculateFees(transactionMapper.map2To(todayTransactions));
 			Money sellingCounter = new Money(new BigDecimal(0));
 			if(confirmation.getMoney().equals(moneyBuy.add(fees))){
-				addStocksClient(buyStock);
-				sellingCounter = calculateMoneySell(clientStocks, sellStock);
+				if(transactionBuy!= null){
+					addStocksClient(transactionBuy);					
+				}
+				if(transactionSell!=null){
+					sellingCounter = calculateMoneySell(clientStocks, transactionSell);					
+				}
 				updateTransactionsStatus(todayTransactions);
 			}
 			brokerConfirmation = bankService.transfer(new Authorization(getBrokerAccountNumber(), getBrokerPassword()), sellingCounter, clientAccountNumber);
 		}
 		return brokerConfirmation;
 	}
+	
+	private List<TransactionEntity> getByTypeFromTransactionList(Map<TransactionType, List<TransactionEntity>> groupingByTransType,TransactionType type){
+		return groupingByTransType.get(type);
+	}
 
-	private Money calculateMoneySell(List<StockEntity> clientStocks, List<StockEntity> sellStock) {
+	private Money calculateMoneySell(List<StockEntity> clientStocks, List<TransactionEntity> transactionEntities) {
 		Money sellingCounter = new Money(new BigDecimal(0));
-		for (StockEntity toSell : sellStock) {
+		for (TransactionEntity toSell : transactionEntities) {
 			for (StockEntity actualStock: clientStocks) {
 				if(checkStockCompanyName(toSell, actualStock)){
 					if(checkAvailability(toSell, actualStock)){
@@ -174,26 +191,22 @@ public class BrokerServiceImpl implements BrokerService {
 		return sellingCounter;
 	}
 
-	private boolean checkAvailability(StockEntity toSell, StockEntity actualStock) {
+	private boolean checkAvailability(TransactionEntity toSell, StockEntity actualStock) {
 		return actualStock.getNumber()>=toSell.getNumber();
 	}
 
-	private boolean checkStockCompanyName(StockEntity toSell, StockEntity actualStock) {
+	private boolean checkStockCompanyName(TransactionEntity toSell, StockEntity actualStock) {
 		return toSell.getCompany().getName().equals(actualStock.getCompany().getName());
 	}
 
-	private Money sum(List<StockEntity> stockEntities){
-		return stockEntities.stream().map((se)-> se.getPrice().multiply(se.getNumber())).reduce((m1,m2)->m1.add(m2)).get();
+	private Money sum(List<TransactionEntity> transactionEntities){
+		if(transactionEntities!=null){
+			return transactionEntities.stream().map((t)-> t.getPrice().multiply(t.getNumber())).reduce((m1,m2)->m1.add(m2)).get();			
+		}
+		return new Money(new BigDecimal(0));
 	}
 	
-	private List<StockEntity> getStockEntityFromTransactionList(Map<TransactionType, List<TransactionEntity>> groupingByTransType,TransactionType type){
-		ArrayList<StockEntity> list = new ArrayList<>();
-		List<TransactionEntity> transList = groupingByTransType.get(type);
-		if(transList != null && !transList.isEmpty()){
-			list.addAll(transList.stream().map((t)->t.getStockEntity()).collect(Collectors.toList()));
-		}
-		return list;
-	}
+
 	
 	private List<StockEntity> getClientStocks(Long id){
 		return stockRepository.findAll(stockRepository.getClientStocks(id).stream().map(StockEntity::getId).collect(Collectors.toList()));
@@ -208,7 +221,6 @@ public class BrokerServiceImpl implements BrokerService {
 		Money minimal = new Money(new BigDecimal(5));
 		Money fees = transaction
 		.stream()
-		.map(t->t.getStockTo())
 		.map(st->st.getPrice().multiply(st.getNumber()) // all
 				.multiply(5) //brokerage 0,5%
 				.divide(1000))
